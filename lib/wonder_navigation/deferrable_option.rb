@@ -10,11 +10,11 @@ module WonderNavigation
     end
 
     def present?
-      fixed_value_assigned || block.present?
+      fixed_value_assigned || !!block
     end
 
     def resolvable?(object)
-      fixed_value_assigned || block.present? && (object.present? || block.arity.zero?)
+      fixed_value_assigned || !!block && (!!object || block.arity.zero?)
     end
 
     def try_resolve(object)

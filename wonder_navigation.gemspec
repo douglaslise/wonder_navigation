@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Douglas Lise"]
   spec.email         = ["douglaslise@gmail.com"]
 
-  spec.summary       = "WonderNavigation for menus and breadcrumbs"
-  spec.description   = "WonderNavigation for menus and breadcrumbs"
-  spec.homepage      = "http://github.com/wondersistemas/wonder_navigation"
+  spec.summary       = "Rails Wonderful Navigation for menus and breadcrumbs"
+  spec.description   = "Rails Wonderful Navigation for menus and breadcrumbs"
+  spec.homepage      = "http://github.com/douglaslise/wonder_navigation"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
@@ -26,7 +26,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_development_dependency "rails"
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "simplecov"
 end
