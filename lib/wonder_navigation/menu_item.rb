@@ -3,15 +3,6 @@ module WonderNavigation
   class MenuItem
     attr_accessor :menu_instance, :level, :id, :parent_item, :subitems, :deferrables, :permission
 
-    def xmethod_missing(method, *arguments)
-      puts "missing #{method}(#{arguments})"
-      if Rails.application.routes.url_helpers.respond_to?(method)
-        Rails.application.routes.url_helpers.send(method, arguments)
-      else
-
-      end
-    end
-
     def initialize(menu_instance, level, id, options = {}, &block)
       @level         = level
       @menu_instance = menu_instance
@@ -72,30 +63,31 @@ module WonderNavigation
       result << current
     end
 
-    def entry_visible?(max_depth, usuario_atual)
+    def entry_visible?(max_depth, current_user)
       level < max_depth &&
-        visible_deferrable.resolve(usuario_atual) &&
+        visible_deferrable.resolve(current_user) &&
         label_deferrable.resolvable?(nil) &&
-        has_permission?(usuario_atual)
+        has_permission?(current_user)
     end
 
-    def tree(current_page, max_depth, usuario_atual)
+    def tree(current_page, max_depth, current_user)
       MenuEntry.new(id, level).tap do |entry|
         entry.active  = id == current_page
-        entry.visible = entry_visible?(max_depth, usuario_atual)
+        entry.visible = entry_visible?(max_depth, current_user)
         if entry.visible
           entry.label   = label_deferrable.resolve(nil)
           entry.path    = path_deferrable.try_resolve(nil)
         end
 
-        entry.children = subtree(current_page, max_depth, usuario_atual)
+        entry.children = subtree(current_page, max_depth, current_user)
         entry.promote_active_state
       end
     end
 
-    def has_permission?(usuario_atual)
-      if permission
-        Sis::PermissoesService.new(usuario_atual).possui_permissao?(permission)
+    def has_permission?(current_user)
+      if !!permission && !!menu_instance.permission_checker
+        # debugger
+        instance_exec(permission, current_user, &menu_instance.permission_checker)
       else
         true
       end
@@ -154,9 +146,9 @@ module WonderNavigation
       deferrables[:parent]
     end
 
-    def subtree(current_page, max_depth, usuario_atual)
+    def subtree(current_page, max_depth, current_user)
       subitems.collect do |sub_item|
-        sub_item.tree(current_page, max_depth, usuario_atual)
+        sub_item.tree(current_page, max_depth, current_user)
       end
     end
   end

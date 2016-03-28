@@ -2,6 +2,7 @@ module WonderNavigation
   class ENotDefinedMenu < StandardError; end
   class Menu
     attr_reader :items
+    attr_accessor :permission_checker
 
     # def initialize(menu_id, menu_manager = MenuManager, &block)
     #   @items = {}
@@ -14,15 +15,25 @@ module WonderNavigation
       @items = {}
     end
 
+    def self.register_permission_check(menu_id, menu_manager = MenuManager, &block)
+      get_instance(menu_id, menu_manager).tap do |instance|
+        instance.permission_checker = block
+      end
+    end
+
     def self.register(menu_id, menu_manager = MenuManager, &block)
+      get_instance(menu_id, menu_manager).tap do |instance|
+        instance.items[:root].instance_eval(&block)
+      end
+    end
+
+    def self.get_instance(menu_id, menu_manager)
       instance = menu_manager.fetch(menu_id)
       unless instance
         instance = Menu.new
         instance.items[:root] = MenuItem.new(instance, 0, :root, validate: false)
         menu_manager.set(menu_id, instance)
       end
-
-      instance.items[:root].instance_eval(&block)
 
       instance
     end
@@ -40,10 +51,10 @@ module WonderNavigation
     end
 
     def menu_tree(options = {})
-      usuario_atual = options[:usuario_atual]
+      current_user  = options[:current_user]
       current_page  = options[:current_page]
       max_depth     = options[:max_depth] || 10
-      items[:root].tree(current_page, max_depth, usuario_atual)
+      items[:root].tree(current_page, max_depth, current_user)
     end
 
     def menu_tree_flat(options = {})

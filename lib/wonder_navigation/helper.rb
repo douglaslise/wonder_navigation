@@ -12,8 +12,8 @@ module WonderNavigation
       crumbs.join(" - ")
     end
 
-    def menu_tree
-      WonderNavigation::MenuManager.get(:menu_probus).menu_tree(current_page: @navigation_page, usuario_atual: usuario_atual)
+    def menu_tree(menu_id, current_user)
+      WonderNavigation::MenuManager.get(menu_id).menu_tree(current_page: @navigation_page, current_user: current_user)
     end
 
     private
