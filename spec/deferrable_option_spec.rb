@@ -4,9 +4,9 @@ RSpec.describe WonderNavigation::DeferrableOption do
 
   context "with fixed value" do
     it "should return self value" do
-      subject.fixed_value = "Probus"
+      subject.fixed_value = "FixedValue"
       subject.fixed_value_assigned = true
-      expect(subject.resolve(nil)).to eq("Probus")
+      expect(subject.resolve(nil)).to eq("FixedValue")
     end
   end
   context "with block" do

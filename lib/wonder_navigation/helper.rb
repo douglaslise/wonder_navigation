@@ -3,7 +3,7 @@ module WonderNavigation
 
     def navigation_breadcrumb
       crumbs = crumbs_for_current_page
-      crumbs.any? ? breadcrumb(crumbs) : "Breadcrumb undefined"
+      crumbs.any? ? breadcrumb(crumbs) : "Breadcrumb undefined for '#{@navigation_page}'"
     end
 
     def navigation_title_breadcrumb(prefix)
@@ -18,7 +18,7 @@ module WonderNavigation
 
     private
 
-    def crumbs_for_current_page
+    def crumbs_for_current_page(menu_id = :default)
       page = @navigation_page
 
       object = @navigation_object
@@ -31,11 +31,11 @@ module WonderNavigation
         object = controller.instance_variable_get(variable_name.to_sym)
       end
       # object ||= @navigation_parent_object
-      crumbs_for(page.to_sym, object)
+      crumbs_for(menu_id, page.to_sym, object)
     end
 
-    def crumbs_for(id, object)
-      menu = WonderNavigation::MenuManager.get(:menu_probus)
+    def crumbs_for(menu_id, id, object)
+      menu = WonderNavigation::MenuManager.get(menu_id)
       if menu.item_exists?(id)
         menu.breadcrumb_for(id, object)
       else
