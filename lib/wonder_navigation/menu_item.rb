@@ -64,6 +64,8 @@ module WonderNavigation
     end
 
     def entry_visible?(max_depth, current_user)
+      # require "byebug"; debugger
+
       level < max_depth &&
         visible_deferrable.resolve(current_user) &&
         label_deferrable.resolvable?(nil) &&

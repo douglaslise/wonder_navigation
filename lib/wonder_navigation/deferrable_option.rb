@@ -30,7 +30,6 @@ module WonderNavigation
 
     def check_resolvable(object)
       unless resolvable?(object)
-        # raise EObjectNotSupplied.new "Parent block defined for menu #{id} requiring an object, but none (or nil) was supplied on getting breadcrumbs"
         if present?
           raise EObjectNotSupplied.new "A block was defined to require an object but none (or nil) was supplied on deferrable option #{name}"
         else

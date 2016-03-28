@@ -3,7 +3,7 @@ module WonderNavigation
 
     def navigation_breadcrumb
       crumbs = crumbs_for_current_page
-      crumbs.any? ? breadcrumb(crumbs) : "Breadcrumb não definido"
+      crumbs.any? ? breadcrumb(crumbs) : "Breadcrumb undefined"
     end
 
     def navigation_title_breadcrumb(prefix)
@@ -23,7 +23,7 @@ module WonderNavigation
 
       object = @navigation_object
       unless object
-        # Se o objeto não for fornecido via set_wonder_navigation_object então tenta obter uma variável de instância com o nome do controller no singular
+        # If object was not given by set_wonder_navigation_object then try get an instance variable called with the same name that the controller in singular
         mod, resource = controller_path.split("/")
         mod, resource = nil, mod if resource.nil?
         variable_name = [mod, resource.singularize].compact.join("_")

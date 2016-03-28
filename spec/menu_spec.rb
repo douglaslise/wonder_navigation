@@ -10,9 +10,9 @@ RSpec.describe WonderNavigation::Menu do
     def set(id, instance)
       menus[id] = instance
     end
-    def get(id)
-      fetch(id)
-    end
+    # def get(id)
+    #   fetch(id)
+    # end
     def fetch(id)
       menus[id]
     end
@@ -61,13 +61,13 @@ RSpec.describe WonderNavigation::Menu do
       expect(breadcrumbs.collect(&:path)).to  eq(["/",             "/a1",       nil,             "/a1/a31",          "/a1/a31/obj1/obj2"])
     end
 
-    it "deve retornar um erro quando o id não estiver definido" do
+    it "should raise error when id is undefined" do
       expect{menu_instance.breadcrumb_for(:invalido)}.to raise_error(WonderNavigation::ENotDefinedMenu)
     end
   end
 
   context "menus" do
-    context "devem ser retornados de acordo com a estrutura" do
+    context "should be returned according to the structure" do
       let(:visible_menus){
         menu_instance.menu_tree_flat(current_page: :nivel_a4).select(&:visible)
       }

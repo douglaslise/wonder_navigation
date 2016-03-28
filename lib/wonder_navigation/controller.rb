@@ -2,10 +2,10 @@ module WonderNavigation
   module Controller
 
     def self.included(controller)
-      controller.before_action :set_default_navigation_page
+      controller.before_action :set_default_wonder_navigation_page
     end
 
-    def set_default_navigation_page
+    def set_default_wonder_navigation_page
       page_action = case action_name.to_sym
                     when :create then :new
                     when :update then :edit

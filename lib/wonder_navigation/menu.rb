@@ -4,13 +4,6 @@ module WonderNavigation
     attr_reader :items
     attr_accessor :permission_checker
 
-    # def initialize(menu_id, menu_manager = MenuManager, &block)
-    #   @items = {}
-    #   menu_maanager.set(menu_id, self)
-    #   items[:root] = MenuItem.new(self, 0, :root, &block)
-    #   # items[:root].instance_eval(&block)
-    # end
-
     def initialize
       @items = {}
     end
