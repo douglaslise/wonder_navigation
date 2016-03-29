@@ -1,10 +1,9 @@
 # Rails Wonderful Navigation
 
 [![Code Climate](https://codeclimate.com/github/douglaslise/wonder_navigation/badges/gpa.svg)](https://codeclimate.com/github/douglaslise/wonder_navigation)
+[![Gem Version](https://badge.fury.io/rb/wonder_navigation.svg)](https://badge.fury.io/rb/wonder_navigation)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/wonder_navigation`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Describe your Rails' menus and breadcrumbs in a single place, with support for permissions, fixed and resource based labels.
 
 ## Installation
 
@@ -24,7 +23,37 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In Rails, create a folder `config/navigation/default` and a file called `config/navigation/default.yml`. Inside the yml file you put the list of files that contains menu definitions:
+```yml
+---
+default:
+  - public
+  - admin
+```
+After, create the corresponding files (`config/navigation/default/public.rb`, `config/navigation/default/admin.rb`):
+
+```ruby
+WonderNavigation::Menu.register(:default) do
+  label { "Begin" }
+  path { root_path }
+  menu :blog, "Blog" do #Non-linked menu level
+    resource :posts, label: "Posts", path: posts_path do |index, new, show|
+      show.label {|post| post.title.truncate(15) }
+      # Here you can overwrite new and index entries
+
+      menu :comments, "Comments", path: post_comments_path do
+        menu :comment_show do
+          label {|comment| "Comment from #{comment.author}" }
+          path {|comment| post_comment_path(comment) }
+          menu :comment_edit, "Editing" do
+            path {|comment| edit_post_comment_path(comment)}
+          end
+        end
+      end
+    end
+  end
+```
+
 
 ## Development
 

@@ -6,11 +6,11 @@ require 'wonder_navigation/version'
 Gem::Specification.new do |spec|
   spec.name          = "wonder_navigation"
   spec.version       = WonderNavigation::VERSION
-  spec.authors       = ["Douglas Lise"]
+  spec.authors       = ["Douglas Lise", "Rodrigo Rosa"]
   spec.email         = ["douglaslise@gmail.com"]
 
   spec.summary       = "Rails Wonderful Navigation"
-  spec.description   = "Rails Wonderful Navigation for menus and breadcrumbs"
+  spec.description   = "Describe your Rails' menus and breadcrumbs in a single place, with support for permissions, fixed and resource based labels."
   spec.homepage      = "http://github.com/douglaslise/wonder_navigation"
   spec.licenses      = ['MIT']
 
