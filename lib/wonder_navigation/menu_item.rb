@@ -38,11 +38,11 @@ module WonderNavigation
     def resource(id, options = {}, &block)
       new = show = nil
       index = menu "#{id}_index", options do
-        new = menu "#{id}_new", "Novo", visible: false
+        new = menu "#{id}_new", options.fetch(:new_label, translate_resource_action(:new, "New")), visible: false
         show = menu "#{id}_show" do
           label {|obj| obj.to_s }
           path {|obj| obj }
-          menu "#{id}_edit", "Edição"
+          menu "#{id}_edit", translate_resource_action(:edit, "Edit")
         end
       end
       index.instance_exec(index, new, show, &block) if block_given?
@@ -153,6 +153,14 @@ module WonderNavigation
     def subtree(current_page, max_depth, current_user)
       subitems.collect do |sub_item|
         sub_item.tree(current_page, max_depth, current_user)
+      end
+    end
+
+    def translate_resource_action(action, default)
+      if defined?(I18n)
+        I18n.t("wonder_navigation.resource.#{action}", default: default)
+      else
+        default
       end
     end
   end
