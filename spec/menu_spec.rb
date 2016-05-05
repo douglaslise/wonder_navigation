@@ -26,7 +26,7 @@ RSpec.describe WonderNavigation::Menu do
     WonderNavigation::Menu.register(:menu_teste, manager) do
       path { "/" }
       label { "Start of Menu" }
-      menu :nivel_a1 do
+      menu :nivel_a1, icon: "fa fa-user" do
         label { "Level A1" }
         path { "/a1" }
         menu :nivel_a2 do
@@ -42,7 +42,7 @@ RSpec.describe WonderNavigation::Menu do
           menu :nivel_a3_2, "Level A3-2"
         end
       end
-      menu :nivel_b1, "Level B1", path: "/b" do
+      menu :nivel_b1, "Level B1", path: "/b", icon: "fa fa-users" do
         menu :nivel_b2, label: "Level B2" do
           label {|objeto| objeto.to_s}
         end
@@ -92,6 +92,16 @@ RSpec.describe WonderNavigation::Menu do
         expect(items).to eq([true, true, false])
       end
 
+    end
+
+    context "with icons" do
+      let(:icons_menu) do
+        menu_instance.menu_tree_flat.select(&:icon).collect(&:icon)
+      end
+
+      it "should have classes of icons" do
+        expect(icons_menu).to  eq(["fa fa-user", "fa fa-users"])
+      end
     end
   end
 
