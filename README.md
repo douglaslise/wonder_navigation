@@ -2,6 +2,7 @@
 
 [![Code Climate](https://codeclimate.com/github/douglaslise/wonder_navigation/badges/gpa.svg)](https://codeclimate.com/github/douglaslise/wonder_navigation)
 [![Gem Version](https://badge.fury.io/rb/wonder_navigation.svg)](https://badge.fury.io/rb/wonder_navigation)
+[![Build Status](https://travis-ci.org/douglaslise/wonder_navigation.svg?branch=master)](https://travis-ci.org/douglaslise/wonder_navigation)
 
 Describe your Rails' menus and breadcrumbs in a single place, with support for permissions, fixed and resource based labels.
 
