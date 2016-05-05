@@ -1,6 +1,6 @@
 module WonderNavigation
   class MenuEntry
-    attr_accessor :id, :label, :path, :level, :active, :visible, :children
+    attr_accessor :id, :label, :path, :level, :active, :visible, :children, :icon
     def initialize(id, level)
       @id = id
       @level = level

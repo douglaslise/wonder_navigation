@@ -1,7 +1,7 @@
 module WonderNavigation
   class ELabelNotDefined < StandardError; end
   class MenuItem
-    attr_accessor :menu_instance, :level, :id, :parent_item, :subitems, :deferrables, :permission
+    attr_accessor :menu_instance, :level, :id, :parent_item, :subitems, :deferrables, :permission, :icon
 
     def initialize(menu_instance, level, id, options = {}, &block)
       @level         = level
@@ -9,6 +9,7 @@ module WonderNavigation
       @id            = id
       @subitems      = []
       @permission    = options[:permission]
+      @icon          = options[:icon]
       @menu_instance.items[id] = self
       initialize_deferrables(options)
 
@@ -76,6 +77,7 @@ module WonderNavigation
       MenuEntry.new(id, level).tap do |entry|
         entry.active  = id == current_page
         entry.visible = entry_visible?(max_depth, current_user)
+        entry.icon = icon
         if entry.visible
           entry.label   = label_deferrable.resolve(nil)
           entry.path    = path_deferrable.try_resolve(nil)

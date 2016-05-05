@@ -70,7 +70,7 @@ RSpec.describe WonderNavigation::MenuItem do
         root.path do
           "/"
         end
-        resource :products, label: "Products", path: "/products" do |_index, _new, show|
+        resource :products, label: "Products", path: "/products", icon: "fa fa-users" do |_index, _new, show|
           show.label {|produto| produto.label}
           show.path {"/1"}
         end
@@ -88,7 +88,7 @@ RSpec.describe WonderNavigation::MenuItem do
       WonderNavigation::Menu.register(menu_id, manager) do
         label { "Root" }
         path { "/" }
-        menu :products, label: "Products", path: "/products", permission: "products" do
+        menu :products, label: "Products", path: "/products", permission: "products", icon: "fa fa-users" do
           menu :product do
             path{|product| "/products/#{product.id}" }
             label{|product| product.label }
