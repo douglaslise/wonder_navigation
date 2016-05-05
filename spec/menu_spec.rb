@@ -93,6 +93,16 @@ RSpec.describe WonderNavigation::Menu do
       end
 
     end
+
+    context "with icons" do
+      let(:icons_menu) do
+        menu_instance.menu_tree_flat.select(&:icon).collect(&:icon)
+      end
+
+      it "should have classes of icons" do
+        expect(icons_menu).to  eq(["fa fa-user", "fa fa-users"])
+      end
+    end
   end
 
 end
