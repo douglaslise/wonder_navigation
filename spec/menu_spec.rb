@@ -50,6 +50,34 @@ RSpec.describe WonderNavigation::Menu do
     end
   }
 
+  let(:second_menu_instance) {
+    WonderNavigation::Menu.register(:second_menu_test, manager) do
+      path { "/" }
+      label { "Home Second Menu" }
+      menu :nivel_c1, icon: "fa fa-user" do
+        label { "Level C1" }
+        path { "/c1" }
+        menu :nivel_c2 do
+          label {|obj| obj.label }
+          menu :nivel_c3_1, "Level C3-1" do
+            path { "/c1/c31"}
+            menu :nivel_c4 do
+              parent {|obj| obj.parent_object }
+              label {|obj| obj.label }
+              path {|obj| "/c1/c31/obj1/obj2" }
+            end
+          end
+          menu :nivel_c3_2, "Level C3-2"
+        end
+      end
+      menu :nivel_d1, "Level D1", path: "/d", icon: "fa fa-users" do
+        menu :nivel_d2, label: "Level D2" do
+          label {|objeto| objeto.to_s}
+        end
+      end
+    end
+  }
+
   let(:objeto) {
     OpenStruct.new({label: "Child Object", parent_object: OpenStruct.new({label: "Parent Object"})})
   }
@@ -63,6 +91,12 @@ RSpec.describe WonderNavigation::Menu do
 
     it "should raise error when id is undefined" do
       expect{menu_instance.breadcrumb_for(:invalido)}.to raise_error(WonderNavigation::ENotDefinedMenu)
+    end
+
+    it "should return on the exactly order to the second menu" do
+      breadcrumbs = second_menu_instance.breadcrumb_for :nivel_c4, objeto
+      expect(breadcrumbs.collect(&:label)).to eq(["Home Second Menu", "Level C1", "Parent Object", "Level C3-1", "Child Object"])
+      expect(breadcrumbs.collect(&:path)).to  eq(["/",             "/c1",       nil,             "/c1/c31",          "/c1/c31/obj1/obj2"])
     end
   end
 
@@ -91,7 +125,32 @@ RSpec.describe WonderNavigation::Menu do
       it "active" do
         expect(items).to eq([true, true, false])
       end
+    end
 
+    context "should be returned according to the second menu structure " do
+      let(:visible_menus){
+        second_menu_instance.menu_tree_flat(current_page: :nivel_c4).select(&:visible)
+      }
+      let(:paths) do
+        visible_menus.collect(&:path)
+      end
+      it "paths" do
+        expect(paths).to  eq(["/", "/c1", "/d"])
+      end
+
+      let(:labels) do
+        visible_menus.collect(&:label)
+      end
+      it "labels" do
+        expect(labels).to eq(["Home Second Menu", "Level C1", "Level D1"])
+      end
+
+      let(:items) do
+        visible_menus.collect(&:active)
+      end
+      it "active" do
+        expect(items).to eq([true, true, false])
+      end
     end
 
     context "with icons" do
