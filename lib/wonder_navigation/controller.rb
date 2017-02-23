@@ -3,6 +3,7 @@ module WonderNavigation
 
     def self.included(controller)
       controller.before_action :set_default_wonder_navigation_page
+      controller.before_action :set_current_wonder_navigation_menu
     end
 
     def set_default_wonder_navigation_page
@@ -12,6 +13,10 @@ module WonderNavigation
                     else action_name
                     end
       set_navigation_page "#{controller_path.tr('/','_')}_#{page_action}"
+    end
+
+    def set_current_wonder_navigation_menu(current_menu = :default)
+      @current_menu = current_menu
     end
 
     def set_wonder_navigation_object(navigation_object)

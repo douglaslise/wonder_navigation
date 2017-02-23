@@ -2,12 +2,12 @@ module WonderNavigation
   module Helper
 
     def navigation_breadcrumb
-      crumbs = crumbs_for_current_page
+      crumbs = crumbs_for_current_page(@current_menu)
       crumbs.any? ? breadcrumb(crumbs) : "Breadcrumb undefined for '#{@navigation_page}'"
     end
 
     def navigation_title_breadcrumb(prefix)
-      crumbs = crumbs_for_current_page.collect(&:label)
+      crumbs = crumbs_for_current_page(@current_menu).collect(&:label)
       crumbs[0] = prefix
       crumbs.join(" - ")
     end
